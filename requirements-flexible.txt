@@ -1,0 +1,26 @@
+# Alternative requirements with more flexible versions
+# Use this if the main requirements.txt has version conflicts
+
+# Core FastAPI
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+
+# AI/ML - Let pip find compatible versions
+whisperx
+torch
+torchaudio
+
+# Media processing
+moviepy
+requests
+aiofiles
+python-dotenv
+Pillow
+numpy
+
+# Optional: specific working combinations
+# torch==2.4.1
+# torchaudio==2.4.1
+# transformers==4.44.0

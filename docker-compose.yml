@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  caption-generator:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - WHISPERX_MODEL=large-v2
+      - MAX_FILE_SIZE=500000000
+      - TEMP_DIR=/app/temp
+      - FFMPEG_THREADS=4
+    volumes:
+      - ./temp:/app/temp
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - caption-generator
+    restart: unless-stopped
+    profiles:
+      - production
